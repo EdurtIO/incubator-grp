@@ -7,6 +7,7 @@
     <artifactId>incubator-grp</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+
     <modules>
         <module>server</module>
         <module>common</module>
