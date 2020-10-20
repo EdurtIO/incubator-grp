@@ -3,6 +3,7 @@ package io.edurt.grp.server;
 import com.google.inject.Guice;
 import com.google.inject.Module;
 import io.edurt.grp.common.properties.PropertiesUtils;
+import io.edurt.grp.server.netty.NettyServer;
 import io.edurt.grp.spi.ConfigurationModule;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -31,6 +32,19 @@ public class GrpServer {
         }
         LOGGER.info("加载模块完成，共加载{}个模块", modules.size());
         Guice.createInjector(modules);
+        Thread thread = NettyServer.build()
+                .bindPort(PropertiesUtils.getIntValue(configuration,
+                        GrpConfiguration.SERVER_PORT,
+                        GrpConfigurationDefault.SERVER_PORT))
+                .start();
+        LOGGER.info("Grp服务启动成功！");
+        try {
+            thread.join();
+            LOGGER.info("Grp服务启动成功！");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            LOGGER.error("Grp服务启动失败，错误信息 {}", e);
+        }
     }
 
     private static List<Module> getModules() {

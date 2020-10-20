@@ -1,0 +1,1 @@
+package io.edurt.grp.common.properties;
