@@ -5,8 +5,12 @@
 
     <groupId>io.edurt.grp</groupId>
     <artifactId>incubator-grp</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>1.0.0</version>
+    <modules>
+        <module>server</module>
+        <module>common</module>
+    </modules>
 
     <name>incubator-grp</name>
     <description>Grp是基于Guice和Protobuf开发的Rpc框架！</description>
@@ -41,12 +45,37 @@
     </organization>
 
     <properties>
+        <guice.version>4.2.3</guice.version>
+        <log4j.version>2.13.3</log4j.version>
+        <commons.lang.version>3.11</commons.lang.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
         <environment.compile.java.version>1.8</environment.compile.java.version>
     </properties>
 
-    <dependencies>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.edurt.grp</groupId>
+                <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
