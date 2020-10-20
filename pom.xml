@@ -16,9 +16,13 @@
         <url>https://github.com/EdurtIO/incubator-grp.git</url>
     </scm>
 
+    <inceptionYear>2020</inceptionYear>
+
     <licenses>
         <license>
-            <name></name>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
