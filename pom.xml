@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.edurt.grp</groupId>
+    <artifactId>incubator-grp</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
+
+    <name>incubator-grp</name>
+    <description>Grp是基于Guice和Protobuf开发的Rpc框架！</description>
+    <url>https://incubator.grp.edurt.io</url>
+
+    <scm>
+        <url>https://github.com/EdurtIO/incubator-grp.git</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name></name>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>qianmoQ</name>
+            <roles>
+                <role>owner</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>Edurt Software Foundation</name>
+        <url>https://www.edurt.io</url>
+    </organization>
+
+    <properties>
+        <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
+        <environment.compile.java.version>1.8</environment.compile.java.version>
+    </properties>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.maven.compiler.version}</version>
+                <configuration>
+                    <source>${environment.compile.java.version}</source>
+                    <target>${environment.compile.java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
