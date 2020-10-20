@@ -13,6 +13,7 @@
         <module>spi</module>
         <module>client</module>
         <module>proto</module>
+        <module>component</module>
     </modules>
 
     <name>incubator-grp</name>
@@ -53,6 +54,7 @@
         <netty.version>4.1.53.Final</netty.version>
         <juint.version>4.13.1</juint.version>
         <lombox.version>1.16.16</lombox.version>
+        <curator.version>5.1.0</curator.version>
         <commons.lang.version>3.11</commons.lang.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
         <environment.compile.java.version>1.8</environment.compile.java.version>
@@ -104,6 +106,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>${curator.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

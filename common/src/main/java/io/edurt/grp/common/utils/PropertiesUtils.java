@@ -43,6 +43,10 @@ public class PropertiesUtils {
      * @return 读取到的数据，读取不到则返回默认值
      */
     public static Integer getIntValue(Properties properties, String key, Integer defaultValue) {
+        return Integer.valueOf(getStringValue(properties, key, String.valueOf(defaultValue)));
+    }
+
+    public static String getStringValue(Properties properties, String key, String defaultValue) {
         if (ObjectUtils.isEmpty(properties)) {
             LOGGER.debug("传递的配置文件为空，将使用默认值");
             return defaultValue;
@@ -51,7 +55,7 @@ public class PropertiesUtils {
             LOGGER.debug("传递的配置尚未包含需要解析的主键，将使用默认值");
             return defaultValue;
         }
-        return Integer.valueOf(String.valueOf(properties.getOrDefault(key, defaultValue)));
+        return String.valueOf(properties.getOrDefault(key, defaultValue));
     }
 
 }
