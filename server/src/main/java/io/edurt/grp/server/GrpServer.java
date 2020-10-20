@@ -1,10 +1,15 @@
 package io.edurt.grp.server;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.Module;
-import io.edurt.grp.common.properties.PropertiesUtils;
+import io.edurt.grp.common.utils.NetWorksUtils;
+import io.edurt.grp.common.utils.PropertiesUtils;
 import io.edurt.grp.server.netty.NettyServer;
-import io.edurt.grp.spi.ConfigurationModule;
+import io.edurt.grp.spi.module.ConfigurationModule;
+import io.edurt.grp.spi.registry.RegistryService;
+import io.edurt.grp.spi.registry.RegistryServiceFactory;
+import io.edurt.grp.spi.rpc.RpcContext;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class GrpServer {
 
@@ -31,13 +37,25 @@ public class GrpServer {
             modules.stream().forEach(v -> LOGGER.info("当前加载模块名 <{}>", v.toString()));
         }
         LOGGER.info("加载模块完成，共加载{}个模块", modules.size());
-        Guice.createInjector(modules);
-        Thread thread = NettyServer.build()
-                .bindPort(PropertiesUtils.getIntValue(configuration,
-                        GrpConfiguration.SERVER_PORT,
-                        GrpConfigurationDefault.SERVER_PORT))
-                .start();
+        Injector injector = Guice.createInjector(modules);
+        RpcContext rpcContext = RpcContext.build(injector);
+        Integer port = PropertiesUtils.getIntValue(configuration,
+                GrpConfiguration.SERVER_PORT,
+                GrpConfigurationDefault.SERVER_PORT);
+        Thread thread = NettyServer.build().bindPort(port).start();
         LOGGER.info("Grp服务启动成功！");
+        LOGGER.info("扫描节点绑定的RPC服务");
+        RegistryService service = new RegistryService();
+        List<String> services = rpcContext.getServices()
+                .keySet()
+                .stream()
+                .map(clazz -> clazz.getName())
+                .collect(Collectors.toList());
+        service.setServices(services);
+        service.setHostname(NetWorksUtils.getHostName());
+        service.setPort(port);
+        service.setId(service.getHostname());
+        RegistryServiceFactory.build(service).register();
         try {
             thread.join();
             LOGGER.info("Grp服务启动成功！");

@@ -1,4 +1,4 @@
-package io.edurt.grp.common.properties;
+package io.edurt.grp.common.utils;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
