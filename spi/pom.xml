@@ -11,13 +11,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>server</artifactId>
-    <name>Grp Server</name>
+    <artifactId>spi</artifactId>
+    <name>Grp SPI</name>
 
     <dependencies>
         <dependency>
             <groupId>io.edurt.grp</groupId>
-            <artifactId>spi</artifactId>
+            <artifactId>common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -30,10 +30,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
         </dependency>
     </dependencies>
 

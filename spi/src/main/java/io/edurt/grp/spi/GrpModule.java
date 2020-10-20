@@ -1,4 +1,4 @@
-package io.edurt.grp.server;
+package io.edurt.grp.spi;
 
 import com.google.inject.AbstractModule;
 

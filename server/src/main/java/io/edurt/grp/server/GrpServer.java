@@ -2,7 +2,8 @@ package io.edurt.grp.server;
 
 import com.google.inject.Guice;
 import com.google.inject.Module;
-import io.edurt.grp.server.module.ConfigurationModule;
+import io.edurt.grp.common.properties.PropertiesUtils;
+import io.edurt.grp.spi.ConfigurationModule;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class GrpServer {
 
@@ -22,7 +24,8 @@ public class GrpServer {
         LOGGER.info("开始加载模块");
         LOGGER.info("当前加载配置信息模块");
         String configPath = String.join(File.separator, System.getProperty("user.dir"), "conf");
-        modules.add(new ConfigurationModule(String.join(File.separator, configPath, "application.properties")));
+        Properties configuration = PropertiesUtils.loadProperties(String.join(File.separator, configPath, "application.properties"));
+        modules.add(new ConfigurationModule(configuration));
         if (ObjectUtils.isNotEmpty(modules)) {
             modules.stream().forEach(v -> LOGGER.info("当前加载模块名 <{}>", v.toString()));
         }

@@ -1,8 +1,7 @@
-package io.edurt.grp.server.module;
+package io.edurt.grp.spi;
 
 import com.google.inject.name.Names;
 import io.edurt.grp.common.properties.PropertiesUtils;
-import io.edurt.grp.server.GrpModule;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

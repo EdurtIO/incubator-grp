@@ -10,6 +10,7 @@
     <modules>
         <module>server</module>
         <module>common</module>
+        <module>spi</module>
     </modules>
 
     <name>incubator-grp</name>
@@ -47,6 +48,7 @@
     <properties>
         <guice.version>4.2.3</guice.version>
         <log4j.version>2.13.3</log4j.version>
+        <netty.version>4.1.53.Final</netty.version>
         <commons.lang.version>3.11</commons.lang.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
         <environment.compile.java.version>1.8</environment.compile.java.version>
@@ -57,6 +59,11 @@
             <dependency>
                 <groupId>io.edurt.grp</groupId>
                 <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.edurt.grp</groupId>
+                <artifactId>spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -73,6 +80,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
