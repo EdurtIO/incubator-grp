@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import io.edurt.grp.common.utils.NetWorksUtils;
 import io.edurt.grp.common.utils.PropertiesUtils;
+import io.edurt.grp.server.module.GrpServiceModule;
 import io.edurt.grp.server.netty.NettyServer;
 import io.edurt.grp.spi.module.ConfigurationModule;
 import io.edurt.grp.spi.registry.RegistryService;
@@ -33,6 +34,7 @@ public class GrpServer {
         String configPath = String.join(File.separator, System.getProperty("user.dir"), "conf");
         Properties configuration = PropertiesUtils.loadProperties(String.join(File.separator, configPath, "application.properties"));
         modules.add(new ConfigurationModule(configuration));
+        modules.add(new GrpServiceModule());
         if (ObjectUtils.isNotEmpty(modules)) {
             modules.stream().forEach(v -> LOGGER.info("当前加载模块名 <{}>", v.toString()));
         }
