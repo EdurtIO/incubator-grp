@@ -12,10 +12,10 @@ public class TestGrpClient {
 
     @Test
     public void test() {
-        Injector injector = Guice.createInjector(new GrpClientModule("c1-dsj-hadoop117.bj:2181",
-                Arrays.asList(ServicePrint.class)));
-        ServicePrint print = injector.getInstance(ServicePrint.class);
-        System.out.println(print.toString());
+//        Injector injector = Guice.createInjector(new GrpClientModule("localhost:2181",
+//                Arrays.asList(ServicePrint.class)));
+//        ServicePrint print = injector.getInstance(ServicePrint.class);
+//        System.out.println(print.toString());
     }
 
 }

@@ -2,6 +2,7 @@ package io.edurt.grp.component.zookeeper;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import io.edurt.grp.common.utils.NetWorksUtils;
 import io.edurt.grp.component.zookeeper.client.ZookeeperClient;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,6 +51,11 @@ public class TestZookeeperComponent {
     public void testCreateEphemeralNode() {
         System.out.println(zookeeperClient.createEphemeralNode(node1));
         System.out.println(zookeeperClient.createEphemeralNode(node2, "test"));
+    }
+
+    @Test
+    public void test() {
+        System.out.println(this.zookeeperClient.getNode(NetWorksUtils.getHostName()));
     }
 
 }

@@ -7,4 +7,9 @@ public class GrpConfigurationDefault {
      */
     public final static Integer SERVER_PORT = 8080;
 
+    /**
+     * 节点属性
+     */
+    public final static NodeEnum NODE_TYPE = NodeEnum.worker;
+
 }

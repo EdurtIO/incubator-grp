@@ -7,4 +7,9 @@ public class GrpConfiguration {
      */
     public final static String SERVER_PORT = "server.port";
 
+    /**
+     * 节点属性
+     */
+    public final static String NODE_TYPE = "node.type";
+
 }

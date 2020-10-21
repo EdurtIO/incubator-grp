@@ -79,6 +79,16 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.edurt.grp</groupId>
+                <artifactId>client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.edurt.grp</groupId>
+                <artifactId>server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.edurt.grp.component</groupId>
                 <artifactId>component-zookeeper</artifactId>
                 <version>${project.version}</version>

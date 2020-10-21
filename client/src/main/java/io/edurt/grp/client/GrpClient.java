@@ -2,6 +2,7 @@ package io.edurt.grp.client;
 
 import com.google.common.collect.ArrayListMultimap;
 import io.edurt.grp.client.proxy.GrpInvocationProxy;
+import io.edurt.grp.component.zookeeper.client.ZookeeperClient;
 import io.edurt.grp.proto.GrpRequest;
 import io.edurt.grp.proto.GrpResponse;
 import io.edurt.grp.spi.registry.RegistryServiceDiscovery;
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class GrpClient {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(GrpClient.class);
+
     /**
      * 服务调用频率
      */
@@ -26,6 +28,7 @@ public class GrpClient {
 
     public GrpClient(RegistryServiceDiscovery serviceDiscovery) {
         this.serviceDiscovery = serviceDiscovery;
+        serviceDiscovery.syncService();
     }
 
     private RegistryServiceDiscovery getServiceDiscovery() {
@@ -62,7 +65,6 @@ public class GrpClient {
         Long index = totalInvokeTimes % remoteServices.size();
         String remoteServiceAddress = remoteServices.get(index.intValue());
         return null;
-
     }
 
 }

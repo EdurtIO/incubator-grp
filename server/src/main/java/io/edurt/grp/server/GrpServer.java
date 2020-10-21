@@ -3,6 +3,8 @@ package io.edurt.grp.server;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import io.edurt.grp.client.GrpClient;
+import io.edurt.grp.client.module.GrpClientModule;
 import io.edurt.grp.common.utils.NetWorksUtils;
 import io.edurt.grp.common.utils.PropertiesUtils;
 import io.edurt.grp.component.zookeeper.ZookeeperModule;
@@ -28,16 +30,19 @@ public class GrpServer {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(GrpServer.class);
 
+    private static Properties nodeConfiguration;
+
     public static void main(String[] args) {
         LOGGER.info("Grp服务启动，开始时间 {}", LocalDateTime.now());
         List<Module> modules = getModules();
         LOGGER.info("开始加载模块");
         LOGGER.info("当前加载配置信息模块");
+        modules.add(new ZookeeperModule());
         String configPath = String.join(File.separator, System.getProperty("user.dir"), "conf");
         Properties configuration = PropertiesUtils.loadProperties(String.join(File.separator, configPath, "application.properties"));
         modules.add(new ConfigurationModule(configuration));
+        modules.add(loadNodeConfiguration());
         modules.add(new GrpServiceModule());
-        modules.add(new ZookeeperModule());
         if (ObjectUtils.isNotEmpty(modules)) {
             modules.stream().forEach(v -> LOGGER.info("当前加载模块名 <{}>", v.toString()));
         }
@@ -60,7 +65,18 @@ public class GrpServer {
         service.setHostname(NetWorksUtils.getHostName());
         service.setPort(port);
         service.setId(service.getHostname());
-        RegistryServiceFactory.build(service, injector.getInstance(ZookeeperClient.class)).register();
+        switch (NodeEnum.valueOf(PropertiesUtils.getStringValue(nodeConfiguration,
+                GrpConfiguration.NODE_TYPE,
+                GrpConfigurationDefault.NODE_TYPE.name()))) {
+            case master:
+                // master节点情况下初始化所有的Client
+                injector.createChildInjector(new GrpClientModule(injector.getInstance(ZookeeperClient.class)));
+                break;
+            case worker:
+            default:
+                // worker节点情况下，上报worker节点信息
+                RegistryServiceFactory.build(service, injector.getInstance(ZookeeperClient.class)).register();
+        }
         try {
             thread.join();
             LOGGER.info("Grp服务启动成功！");
@@ -72,6 +88,23 @@ public class GrpServer {
 
     private static List<Module> getModules() {
         return new ArrayList<>();
+    }
+
+    /**
+     * 加载节点信息配置
+     *
+     * @return 节点配置
+     */
+    private static ConfigurationModule loadNodeConfiguration() {
+        LOGGER.info("绑定节点配置信息");
+        String nodeConfigurationPath = String.join(File.separator,
+                System.getProperty("user.dir"),
+                "conf",
+                "node.properties");
+        Properties configuration = PropertiesUtils.loadProperties(nodeConfigurationPath);
+        nodeConfiguration = configuration;
+        LOGGER.info("绑定节点配置信息完成，共绑定{}个配置", configuration.stringPropertyNames().size());
+        return new ConfigurationModule(configuration);
     }
 
 }
