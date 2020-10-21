@@ -11,8 +11,8 @@ public class TestZookeeperComponent {
 
     private Injector injector;
     private ZookeeperClient zookeeperClient;
-    private String node1 = "/test";
-    private String node2 = "/test1";
+    private String node1 = "test";
+    private String node2 = "test1";
 
     @Before
     public void before() {
@@ -44,6 +44,12 @@ public class TestZookeeperComponent {
     @Test
     public void testGetNode() {
         System.out.println(zookeeperClient.getNode(node1));
+    }
+
+    @Test
+    public void testCreateEphemeralNode() {
+        System.out.println(zookeeperClient.createEphemeralNode(node1));
+        System.out.println(zookeeperClient.createEphemeralNode(node2, "test"));
     }
 
 }

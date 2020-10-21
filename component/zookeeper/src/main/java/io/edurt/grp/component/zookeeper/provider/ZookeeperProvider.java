@@ -12,7 +12,6 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.Properties;
 
 public class ZookeeperProvider implements Provider<ZookeeperClient> {
@@ -21,16 +20,12 @@ public class ZookeeperProvider implements Provider<ZookeeperClient> {
 
     private Properties configuration;
 
-    public ZookeeperProvider() {
-        String configurationPath = String.join(File.separator, System.getProperty("user.dir"),
-                "conf",
-                "component",
-                "zookeeper.properties");
-        configuration = PropertiesUtils.loadProperties(configurationPath);
-        LOGGER.info("绑定Zookeeper配置信息完成，共绑定{}个配置", configuration.stringPropertyNames().size());
+    public ZookeeperProvider(Properties configuration) {
+        this.configuration = configuration;
     }
 
     private CuratorFramework getZookeeperClient() {
+        LOGGER.info("构建Zookeeper连接客户端");
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(
                 PropertiesUtils.getIntValue(configuration,
                         ZookeeperConfiguration.CONNECTION_TIMEOUT,
