@@ -1,11 +1,13 @@
 package io.edurt.grp.spi.registry;
 
+import io.edurt.grp.component.zookeeper.client.ZookeeperClient;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalTime;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class RegistryServiceFactory {
 
@@ -18,6 +20,8 @@ public class RegistryServiceFactory {
     private static RegistryServiceFactory factory;
     private RegistryService service;
 
+    private ZookeeperClient zookeeperClient;
+
     private RegistryServiceFactory() {
     }
 
@@ -27,11 +31,12 @@ public class RegistryServiceFactory {
      * @param service 需要注册的服务配置
      * @return 服务注册中心
      */
-    public static RegistryServiceFactory build(RegistryService service) {
+    public static RegistryServiceFactory build(RegistryService service, ZookeeperClient zookeeperClient) {
         if (ObjectUtils.isEmpty(factory)) {
             factory = new RegistryServiceFactory();
         }
         factory.service = service;
+        factory.zookeeperClient = zookeeperClient;
         return factory;
     }
 
@@ -47,7 +52,8 @@ public class RegistryServiceFactory {
         if (ObjectUtils.isNotEmpty(registrys.get(factory.service.getHostname()))) {
             LOGGER.info("当前节点{}数据信息已经在存储中缓冲，跳过此步操作", factory.service.getHostname());
         } else {
-            registrys.put(factory.service.getHostname(), factory.service);
+            this.zookeeperClient.createEphemeralNode(factory.service.getHostname(),
+                    factory.service.getServices().stream().collect(Collectors.joining(",")));
         }
     }
 

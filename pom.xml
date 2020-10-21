@@ -55,7 +55,7 @@
         <netty.version>4.1.53.Final</netty.version>
         <juint.version>4.13.1</juint.version>
         <lombox.version>1.16.16</lombox.version>
-        <curator.version>5.1.0</curator.version>
+        <curator.version>2.12.0</curator.version>
         <commons.lang.version>3.11</commons.lang.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
         <environment.compile.java.version>1.8</environment.compile.java.version>
@@ -76,6 +76,11 @@
             <dependency>
                 <groupId>io.edurt.grp</groupId>
                 <artifactId>proto</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.edurt.grp.component</groupId>
+                <artifactId>component-zookeeper</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

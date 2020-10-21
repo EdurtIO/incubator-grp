@@ -5,6 +5,8 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import io.edurt.grp.common.utils.NetWorksUtils;
 import io.edurt.grp.common.utils.PropertiesUtils;
+import io.edurt.grp.component.zookeeper.ZookeeperModule;
+import io.edurt.grp.component.zookeeper.client.ZookeeperClient;
 import io.edurt.grp.server.module.GrpServiceModule;
 import io.edurt.grp.server.netty.NettyServer;
 import io.edurt.grp.spi.module.ConfigurationModule;
@@ -35,6 +37,7 @@ public class GrpServer {
         Properties configuration = PropertiesUtils.loadProperties(String.join(File.separator, configPath, "application.properties"));
         modules.add(new ConfigurationModule(configuration));
         modules.add(new GrpServiceModule());
+        modules.add(new ZookeeperModule());
         if (ObjectUtils.isNotEmpty(modules)) {
             modules.stream().forEach(v -> LOGGER.info("当前加载模块名 <{}>", v.toString()));
         }
@@ -57,7 +60,7 @@ public class GrpServer {
         service.setHostname(NetWorksUtils.getHostName());
         service.setPort(port);
         service.setId(service.getHostname());
-        RegistryServiceFactory.build(service).register();
+        RegistryServiceFactory.build(service, injector.getInstance(ZookeeperClient.class)).register();
         try {
             thread.join();
             LOGGER.info("Grp服务启动成功！");

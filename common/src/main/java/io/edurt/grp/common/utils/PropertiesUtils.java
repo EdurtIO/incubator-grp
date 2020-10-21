@@ -52,7 +52,7 @@ public class PropertiesUtils {
             return defaultValue;
         }
         if (!properties.containsKey(key)) {
-            LOGGER.debug("传递的配置尚未包含需要解析的主键，将使用默认值");
+            LOGGER.debug("传递的配置尚未包含需要解析的主键<{}>，将使用默认值", key);
             return defaultValue;
         }
         return String.valueOf(properties.getOrDefault(key, defaultValue));

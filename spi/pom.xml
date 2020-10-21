@@ -24,6 +24,10 @@
             <artifactId>proto</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.edurt.grp.component</groupId>
+            <artifactId>component-zookeeper</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
         </dependency>

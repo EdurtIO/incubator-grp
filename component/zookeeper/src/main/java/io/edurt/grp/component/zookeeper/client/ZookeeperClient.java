@@ -2,7 +2,7 @@ package io.edurt.grp.component.zookeeper.client;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.utils.CloseableUtils;
+import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
@@ -59,10 +59,12 @@ public class ZookeeperClient {
             String node;
             if (ObjectUtils.isNotEmpty(value)) {
                 node = client.create()
+                        .creatingParentContainersIfNeeded()
                         .withMode(CreateMode.EPHEMERAL)
                         .forPath(formatNodePath(nodeName), value.getBytes());
             } else {
                 node = client.create()
+                        .creatingParentContainersIfNeeded()
                         .withMode(CreateMode.EPHEMERAL)
                         .forPath(formatNodePath(nodeName));
             }
@@ -166,7 +168,12 @@ public class ZookeeperClient {
      */
     private void startClient() {
         if (ObjectUtils.isNotEmpty(this.client)) {
-            this.client.start();
+            CuratorFrameworkState state = this.client.getState();
+            if (ObjectUtils.isNotEmpty(state)) {
+                if (CuratorFrameworkState.STARTED != state || CuratorFrameworkState.STOPPED == state) {
+                    this.client.start();
+                }
+            }
         }
     }
 
@@ -175,7 +182,7 @@ public class ZookeeperClient {
      */
     private void closeClient() {
         if (ObjectUtils.isNotEmpty(this.client)) {
-            CloseableUtils.closeQuietly(this.client);
+//            CloseableUtils.closeQuietly(this.client);
         }
     }
 
