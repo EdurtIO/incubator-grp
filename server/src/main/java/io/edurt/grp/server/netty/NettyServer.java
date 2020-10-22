@@ -1,5 +1,6 @@
 package io.edurt.grp.server.netty;
 
+import io.edurt.grp.server.channel.heartbeat.HeartbeatInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
