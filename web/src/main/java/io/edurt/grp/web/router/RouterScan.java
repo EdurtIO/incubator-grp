@@ -10,6 +10,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,10 +45,10 @@ public class RouterScan {
                     }
                     router.setParams(params);
                     router.setClazz(clazz);
-                    router.setMethodType(routerMapping.method());
+                    router.setMethods(routerMapping.method());
                     router.setMethod(method);
-                    router.setUrl(routerMapping.api());
-                    routers.put(router.getUrl(), router);
+                    router.setUrls(routerMapping.value());
+                    Arrays.stream(router.getUrls()).forEach(v -> routers.put(v, router));
                 }
             }
         }

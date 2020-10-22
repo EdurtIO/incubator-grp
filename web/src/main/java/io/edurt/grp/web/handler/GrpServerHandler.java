@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.edurt.grp.web.model.Param;
 import io.edurt.grp.web.model.Router;
+import io.edurt.grp.web.type.RequestMethod;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.AsciiString;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,18 +53,15 @@ public class GrpServerHandler extends SimpleChannelInboundHandler<FullHttpReques
                 LOGGER.error("URL不存在请检查URL设置是否正确, URL路径 {}", url);
                 throw new RuntimeException(String.format("URL <%s> does not exist!", url));
             }
-            if (!router.getMethodType().contains(method)) {
-                LOGGER.error("客户端请求方式{}不匹配", method);
-                throw new RuntimeException(String.format("Method <%s> does not match url <%s>!", method, url));
-            }
+            MethodHandler.getMethod(router.getMethods(), method, url);
             LOGGER.debug("解析controller请求参数信息");
             List<Param> paramInfo = router.getParams();
             if (ObjectUtils.isNotEmpty(paramInfo)) {
-                Map<String, String> pathParams = PathHandler.getParams(url, router.getUrl());
+                Map<String, String> pathParams = PathHandler.getParams(url, router.getUrls());
                 Gson initJson = null;
-                if (method.equals("POST")) {
+                if (method.equalsIgnoreCase(RequestMethod.POST.name())) {
                     String contentType = request.headers().get("Content-Type");
-                    if (contentType.contains("application/json")) {
+                    if (StringUtils.isNotEmpty(contentType) && contentType.contains("application/json")) {
                         initJson = GSON.fromJson(request.content().toString(Charset.forName(DEFAULT_CHARSET)), Gson.class);
                     }
                 }

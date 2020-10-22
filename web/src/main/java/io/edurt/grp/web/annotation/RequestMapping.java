@@ -1,5 +1,7 @@
 package io.edurt.grp.web.annotation;
 
+import io.edurt.grp.web.type.RequestMethod;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,8 +11,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
 
-    String api() default "";
+    /**
+     * 请求路径
+     *
+     * @return 请求路径
+     */
+    String[] value() default {};
 
-    String method() default "GET";
+    /**
+     * 请求方式
+     * @see RequestMethod
+     * @return 请求方式
+     */
+    RequestMethod[] method() default {};
 
 }

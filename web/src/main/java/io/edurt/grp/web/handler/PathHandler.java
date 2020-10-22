@@ -1,8 +1,8 @@
 package io.edurt.grp.web.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,9 +35,9 @@ public class PathHandler {
      * @param routerUrl  路由URL
      * @return 客户端请求参数
      */
-    public static Map<String, String> getParams(String requestUrl, String routerUrl) {
+    public static Map<String, String> getParams(String requestUrl, String[] routerUrl) {
         Map<String, String> params = new ConcurrentHashMap<>(16);
-        Matcher keyMatcher = Pattern.compile(pattern).matcher(routerUrl);
+        Matcher keyMatcher = matcherPath(routerUrl);
         List<String> keys = new ArrayList<>(16);
         List<String> values = new ArrayList<>(16);
         while (keyMatcher.find()) {
@@ -57,6 +57,25 @@ public class PathHandler {
             params.put(keys.get(i), value);
         }
         return params;
+    }
+
+    /**
+     * 匹配路由中传递的地址数组，匹配到多个时，默认选择第一个
+     *
+     * @param routerUrl 路由中的地址
+     * @return 匹配到的路由，匹配不到返回null
+     */
+    private static Matcher matcherPath(String[] routerUrl) {
+        Matcher matcher = null;
+        if (ObjectUtils.isNotEmpty(routerUrl) && routerUrl.length > 0) {
+            Optional<Matcher> matcherOptional = Arrays.stream(routerUrl)
+                    .map(v -> Pattern.compile(pattern).matcher(v))
+                    .findFirst();
+            if (matcherOptional.isPresent()) {
+                matcher = matcherOptional.get();
+            }
+        }
+        return matcher;
     }
 
 }
