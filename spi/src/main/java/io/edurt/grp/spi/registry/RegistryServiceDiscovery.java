@@ -6,12 +6,11 @@ import io.edurt.grp.component.zookeeper.client.ZookeeperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
 import java.util.Arrays;
 
-public class RegistryServiceDiscovery {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(RegistryServiceDiscovery.class);
+public class RegistryServiceDiscovery
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistryServiceDiscovery.class);
 
     /**
      * RPC服务列表
@@ -20,14 +19,16 @@ public class RegistryServiceDiscovery {
 
     private ZookeeperClient zookeeperClient;
 
-    public RegistryServiceDiscovery(ZookeeperClient zookeeperClient) {
+    public RegistryServiceDiscovery(ZookeeperClient zookeeperClient)
+    {
         this.zookeeperClient = zookeeperClient;
     }
 
     /**
      * 同步RPC服务节点信息
      */
-    public void syncService() {
+    public void syncService()
+    {
         String serviceAddress = NetWorksUtils.getHostName();
         LOGGER.info("同步节点 {} RPC服务列表", serviceAddress);
         Arrays.stream(this.zookeeperClient.getNode(serviceAddress).split(","))
@@ -36,8 +37,8 @@ public class RegistryServiceDiscovery {
         LOGGER.info("同步节点 {} RPC服务列表完成，共同步{}个服务", serviceAddress, services.size());
     }
 
-    public ArrayListMultimap getServices() {
+    public ArrayListMultimap getServices()
+    {
         return services;
     }
-
 }

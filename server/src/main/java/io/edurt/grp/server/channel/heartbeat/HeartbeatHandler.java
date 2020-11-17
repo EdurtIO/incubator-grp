@@ -8,13 +8,14 @@ import io.netty.handler.timeout.IdleStateEvent;
 import java.nio.charset.Charset;
 import java.util.Date;
 
-public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
-
+public class HeartbeatHandler
+        extends ChannelInboundHandlerAdapter
+{
     int readIdleTimes = 0;
 
-
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg)
+    {
         ByteBuf byteBuf = (ByteBuf) msg;
         String message = byteBuf.toString(Charset.forName("utf-8"));
         System.out.println(new Date() + ": 服务端读到数据 -> " + message);
@@ -25,7 +26,8 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    private ByteBuf getByteBuf(ChannelHandlerContext ctx) {
+    private ByteBuf getByteBuf(ChannelHandlerContext ctx)
+    {
         byte[] bytes = "我是发送给客户端的数据：请重启冰箱!".getBytes(Charset.forName("utf-8"));
         ByteBuf buffer = ctx.alloc().buffer();
         buffer.writeBytes(bytes);
@@ -33,7 +35,9 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt)
+            throws Exception
+    {
         IdleStateEvent event = (IdleStateEvent) evt;
         String eventType = null;
         switch (event.state()) {
@@ -59,8 +63,9 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx)
+            throws Exception
+    {
         System.err.println("=== " + ctx.channel().remoteAddress() + " is active ===");
     }
-
 }

@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequestMapping {
-
+public @interface RequestMapping
+{
     /**
      * 请求路径
      *
@@ -20,9 +20,9 @@ public @interface RequestMapping {
 
     /**
      * 请求方式
-     * @see RequestMethod
+     *
      * @return 请求方式
+     * @see RequestMethod
      */
     RequestMethod[] method() default {};
-
 }

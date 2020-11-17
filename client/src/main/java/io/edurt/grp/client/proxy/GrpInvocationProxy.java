@@ -11,20 +11,24 @@ import java.lang.reflect.Method;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class GrpInvocationProxy implements InvocationHandler {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(GrpInvocationProxy.class);
+public class GrpInvocationProxy
+        implements InvocationHandler
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(GrpInvocationProxy.class);
 
     private Class clazz;
     private GrpClient grpClient;
 
-    public GrpInvocationProxy(Class clazz, GrpClient grpClient) {
+    public GrpInvocationProxy(Class clazz, GrpClient grpClient)
+    {
         this.clazz = clazz;
         this.grpClient = grpClient;
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args)
+            throws Throwable
+    {
         GrpRequest request = new GrpRequest();
         request.setRequestId(UUID.randomUUID().toString());
         request.setClassName(method.getDeclaringClass().getName());
@@ -42,7 +46,7 @@ public class GrpInvocationProxy implements InvocationHandler {
                 LOGGER.debug(args[i].toString());
             }
         }
-        GrpResponse grpResponse  = grpClient.callRemoteService(request);
+        GrpResponse grpResponse = grpClient.callRemoteService(request);
         return grpResponse;
     }
 }

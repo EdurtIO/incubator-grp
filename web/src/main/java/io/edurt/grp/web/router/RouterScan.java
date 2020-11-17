@@ -15,9 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RouterScan {
+public class RouterScan
+{
+    private RouterScan()
+    {}
 
-    public static Map<String, Router> getRouters(Class<?>... classes) {
+    public static Map<String, Router> getRouters(Class<?>... classes)
+    {
         Map<String, Router> routers = new ConcurrentHashMap<>(16);
         for (Class<?> clazz : classes) {
             for (Method method : clazz.getDeclaredMethods()) {
@@ -54,5 +58,4 @@ public class RouterScan {
         }
         return routers;
     }
-
 }

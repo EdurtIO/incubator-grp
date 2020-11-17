@@ -3,7 +3,6 @@ package io.edurt.grp.server;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import io.edurt.grp.client.GrpClient;
 import io.edurt.grp.client.module.GrpClientModule;
 import io.edurt.grp.common.utils.NetWorksUtils;
 import io.edurt.grp.common.utils.PropertiesUtils;
@@ -26,13 +25,17 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-public class GrpServer {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(GrpServer.class);
+public class GrpServer
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(GrpServer.class);
 
     private static Properties nodeConfiguration;
 
-    public static void main(String[] args) {
+    private GrpServer()
+    {}
+
+    public static void main(String[] args)
+    {
         LOGGER.info("Grp服务启动，开始时间 {}", LocalDateTime.now());
         List<Module> modules = getModules();
         LOGGER.info("开始加载模块");
@@ -80,13 +83,15 @@ public class GrpServer {
         try {
             thread.join();
             LOGGER.info("Grp服务启动成功！");
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             e.printStackTrace();
             LOGGER.error("Grp服务启动失败，错误信息 {}", e);
         }
     }
 
-    private static List<Module> getModules() {
+    private static List<Module> getModules()
+    {
         return new ArrayList<>();
     }
 
@@ -95,7 +100,8 @@ public class GrpServer {
      *
      * @return 节点配置
      */
-    private static ConfigurationModule loadNodeConfiguration() {
+    private static ConfigurationModule loadNodeConfiguration()
+    {
         LOGGER.info("绑定节点配置信息");
         String nodeConfigurationPath = String.join(File.separator,
                 System.getProperty("user.dir"),
@@ -106,5 +112,4 @@ public class GrpServer {
         LOGGER.info("绑定节点配置信息完成，共绑定{}个配置", configuration.stringPropertyNames().size());
         return new ConfigurationModule(configuration);
     }
-
 }

@@ -8,18 +8,21 @@ import io.edurt.grp.spi.registry.RegistryServiceDiscovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GrpClientModule extends GrpModule {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(GrpClientModule.class);
+public class GrpClientModule
+        extends GrpModule
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(GrpClientModule.class);
 
     private ZookeeperClient zookeeperClient;
 
-    public GrpClientModule(ZookeeperClient zookeeperClient) {
+    public GrpClientModule(ZookeeperClient zookeeperClient)
+    {
         this.zookeeperClient = zookeeperClient;
     }
 
     @Override
-    protected void configure() {
+    protected void configure()
+    {
         GrpClient grpClient = new GrpClient(getServiceDiscovery());
         bind(GrpClient.class).toInstance(grpClient);
         LOGGER.info("绑定RPC客户端信息");
@@ -29,8 +32,8 @@ public class GrpClientModule extends GrpModule {
     }
 
     @Provides
-    private RegistryServiceDiscovery getServiceDiscovery() {
+    private RegistryServiceDiscovery getServiceDiscovery()
+    {
         return new RegistryServiceDiscovery(this.zookeeperClient);
     }
-
 }

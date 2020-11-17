@@ -12,11 +12,10 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistryService {
-
+public class RegistryService
+{
     private String id; // 唯一标志
     private String hostname; // 主机名称
     private Integer port; // 主机端口
     private List<String> services = new ArrayList<>(); // 主机服务列
-
 }

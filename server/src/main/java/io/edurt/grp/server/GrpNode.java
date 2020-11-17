@@ -1,4 +1,5 @@
 package io.edurt.grp.server;
 
-public class GrpNode {
+public class GrpNode
+{
 }

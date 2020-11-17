@@ -8,7 +8,14 @@ import io.edurt.grp.web.type.RequestMethod;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.util.AsciiString;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,21 +29,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class GrpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-    private final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
-    private final String DEFAULT_CHARSET = "UTF-8";
+public class GrpServerHandler
+        extends SimpleChannelInboundHandler<FullHttpRequest>
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(GrpServerHandler.class);
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
+    private static final String DEFAULT_CHARSET = "UTF-8";
 
     private Map<String, Router> routers;
     private AsciiString contentType = HttpHeaderValues.APPLICATION_JSON;
 
-    public GrpServerHandler(Map<String, Router> routers) {
+    public GrpServerHandler(Map<String, Router> routers)
+    {
         this.routers = routers;
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest request) {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest request)
+    {
         LOGGER.info("Grp Handler请求: {}", request);
         Object result;
         HttpResponseStatus status = null;
@@ -81,12 +91,15 @@ public class GrpServerHandler extends SimpleChannelInboundHandler<FullHttpReques
                 });
                 result = executeMethod(router, params.toArray());
                 status = HttpResponseStatus.OK;
-            } else {
+            }
+            else {
                 result = executeMethod(router);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             result = e.getMessage();
-        } finally {
+        }
+        finally {
             if (status == null) {
                 status = HttpResponseStatus.INTERNAL_SERVER_ERROR;
             }
@@ -102,18 +115,27 @@ public class GrpServerHandler extends SimpleChannelInboundHandler<FullHttpReques
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(ChannelHandlerContext ctx)
+            throws Exception
+    {
         super.channelReadComplete(ctx);
         ctx.flush();
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        if (null != cause) cause.printStackTrace();
-        if (null != ctx) ctx.close();
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception
+    {
+        if (null != cause) {
+            cause.printStackTrace();
+        }
+        if (null != ctx) {
+            ctx.close();
+        }
     }
 
-    private Router getRoute(String url) {
+    private Router getRoute(String url)
+    {
         AtomicReference<Router> router = new AtomicReference<>();
         routers.keySet().forEach(routerKey -> {
             if (PathHandler.verify(url, routerKey)) {
@@ -123,11 +145,12 @@ public class GrpServerHandler extends SimpleChannelInboundHandler<FullHttpReques
         return router.get();
     }
 
-    private Object executeMethod(Router router, Object... params) throws Exception {
+    private Object executeMethod(Router router, Object... params)
+            throws Exception
+    {
         Class<?> cls = router.getClazz();
         Object obj = cls.newInstance();
         Method method = router.getMethod();
         return method.invoke(obj, params);
     }
-
 }

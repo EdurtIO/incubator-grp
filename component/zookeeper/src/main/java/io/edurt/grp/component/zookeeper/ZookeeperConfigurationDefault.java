@@ -1,11 +1,12 @@
 package io.edurt.grp.component.zookeeper;
 
-public class ZookeeperConfigurationDefault {
+public class ZookeeperConfigurationDefault
+{
+    public static final String SERVICE = "localhost:2181";
+    public static final Integer SESSION_TIMEOUT = 5000;
+    public static final Integer CONNECTION_TIMEOUT = 5000;
+    public static final Integer RETRY = 3;
+    public static final String NAMESPACE = "default";
 
-    public final static String SERVICE = "localhost:2181";
-    public final static Integer SESSION_TIMEOUT = 5000;
-    public final static Integer CONNECTION_TIMEOUT = 5000;
-    public final static Integer RETRY = 3;
-    public final static String NAMESPACE = "default";
-
+    private ZookeeperConfigurationDefault() {}
 }

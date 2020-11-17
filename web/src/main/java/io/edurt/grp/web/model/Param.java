@@ -9,9 +9,8 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Param {
-
+public class Param
+{
     private String type; // 请求类型
     private String value; // 请求路径
-
 }

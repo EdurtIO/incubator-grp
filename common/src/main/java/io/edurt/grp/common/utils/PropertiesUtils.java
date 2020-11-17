@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertiesUtils {
+public class PropertiesUtils
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesUtils.class);
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(PropertiesUtils.class);
+    private PropertiesUtils()
+    {}
 
     /**
      * 加载配置信息
@@ -20,14 +23,16 @@ public class PropertiesUtils {
      * @param resourcesPaths 配置文件路径
      * @return 装配的配置信息
      */
-    public static Properties loadProperties(String... resourcesPaths) {
+    public static Properties loadProperties(String... resourcesPaths)
+    {
         Properties props = new Properties();
         for (String location : resourcesPaths) {
             LOGGER.debug("加载配置文件路径地址 {}", location);
             File propertiesFile = new File(location);
             try (InputStream inputStream = new FileInputStream(propertiesFile)) {
                 props.load(inputStream);
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 LOGGER.info("无法加载Properties文件路径:" + location + ": " + ex.getMessage());
             }
         }
@@ -37,16 +42,18 @@ public class PropertiesUtils {
     /**
      * 读取int类型数据
      *
-     * @param properties   读取的配置文件信息
-     * @param key          读取数据的key
+     * @param properties 读取的配置文件信息
+     * @param key 读取数据的key
      * @param defaultValue 默认值
      * @return 读取到的数据，读取不到则返回默认值
      */
-    public static Integer getIntValue(Properties properties, String key, Integer defaultValue) {
+    public static Integer getIntValue(Properties properties, String key, Integer defaultValue)
+    {
         return Integer.valueOf(getStringValue(properties, key, String.valueOf(defaultValue)));
     }
 
-    public static String getStringValue(Properties properties, String key, String defaultValue) {
+    public static String getStringValue(Properties properties, String key, String defaultValue)
+    {
         if (ObjectUtils.isEmpty(properties)) {
             LOGGER.debug("传递的配置文件为空，将使用默认值");
             return defaultValue;
@@ -57,5 +64,4 @@ public class PropertiesUtils {
         }
         return String.valueOf(properties.getOrDefault(key, defaultValue));
     }
-
 }

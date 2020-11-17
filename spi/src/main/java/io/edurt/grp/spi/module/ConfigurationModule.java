@@ -9,17 +9,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public class ConfigurationModule extends GrpModule {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ConfigurationModule.class);
+public class ConfigurationModule
+        extends GrpModule
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationModule.class);
 
     private Properties bootstrapConfiguration;
 
-    public ConfigurationModule(Properties bootstrapConfiguration) {
+    public ConfigurationModule(Properties bootstrapConfiguration)
+    {
         this.bootstrapConfiguration = bootstrapConfiguration;
     }
 
-    public ConfigurationModule(String configurationFilePath) {
+    public ConfigurationModule(String configurationFilePath)
+    {
         LOGGER.info("加载本地配置文件，路径地址为 {}", configurationFilePath);
         if (ObjectUtils.isNotEmpty(configurationFilePath)) {
             this.bootstrapConfiguration = PropertiesUtils.loadProperties(configurationFilePath);
@@ -27,7 +30,8 @@ public class ConfigurationModule extends GrpModule {
     }
 
     @Override
-    protected void configure() {
+    protected void configure()
+    {
         LOGGER.info("开始绑定配置文件相关配置信息");
         this.bootstrapConfiguration
                 .stringPropertyNames()
@@ -35,5 +39,4 @@ public class ConfigurationModule extends GrpModule {
         Names.bindProperties(binder(), bootstrapConfiguration);
         LOGGER.info("绑定配置文件相关配置信息结束，共绑定{}个配置信息", bootstrapConfiguration.stringPropertyNames().size());
     }
-
 }

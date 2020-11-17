@@ -7,11 +7,14 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class NetWorksUtils {
+public class NetWorksUtils
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(NetWorksUtils.class);
+    private static final String DEFAULT_HOSTNAME = "localhost";
+    private static final String DEFAULT_ADDRESS = "127.0.0.1";
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(NetWorksUtils.class);
-    private final static String DEFAULT_HOSTNAME = "localhost";
-    private final static String DEFAULT_ADDRESS = "127.0.0.1";
+    private NetWorksUtils()
+    {}
 
     /**
      * 获取系统主机名
@@ -21,7 +24,8 @@ public class NetWorksUtils {
      * @param useDefault 是否使用默认主机名称
      * @return 系统主机名
      */
-    public static String getHostName(Boolean useDefault) {
+    public static String getHostName(Boolean useDefault)
+    {
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             String host = inetAddress.getHostName();
@@ -31,7 +35,8 @@ public class NetWorksUtils {
                 }
             }
             return host;
-        } catch (UnknownHostException e) {
+        }
+        catch (UnknownHostException e) {
             LOGGER.debug("获取本地主机名出现异常，将使用默认主机名，异常信息 {}", e);
             if (useDefault) {
                 return DEFAULT_HOSTNAME;
@@ -47,7 +52,8 @@ public class NetWorksUtils {
      *
      * @return 系统主机名
      */
-    public static String getHostName() {
+    public static String getHostName()
+    {
         return getHostName(Boolean.TRUE);
     }
 
@@ -59,7 +65,8 @@ public class NetWorksUtils {
      * @param useDefault 是否使用默认IP地址
      * @return 主机IP地址
      */
-    public static String getAddress(Boolean useDefault) {
+    public static String getAddress(Boolean useDefault)
+    {
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             if (ObjectUtils.isNotEmpty(inetAddress.getHostAddress())) {
@@ -68,7 +75,8 @@ public class NetWorksUtils {
             if (useDefault) {
                 return DEFAULT_ADDRESS;
             }
-        } catch (UnknownHostException e) {
+        }
+        catch (UnknownHostException e) {
             LOGGER.debug("获取本地主机IP地址出现异常，将使用默认主机IP，异常信息 {}", e);
             if (useDefault) {
                 return DEFAULT_ADDRESS;
@@ -84,8 +92,8 @@ public class NetWorksUtils {
      *
      * @return 主机IP地址
      */
-    public static String getAddress() {
+    public static String getAddress()
+    {
         return getAddress(Boolean.TRUE);
     }
-
 }

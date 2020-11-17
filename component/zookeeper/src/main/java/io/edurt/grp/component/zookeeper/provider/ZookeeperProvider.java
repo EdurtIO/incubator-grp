@@ -14,17 +14,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public class ZookeeperProvider implements Provider<ZookeeperClient> {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ZookeeperProvider.class);
+public class ZookeeperProvider
+        implements Provider<ZookeeperClient>
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperProvider.class);
 
     private Properties configuration;
 
-    public ZookeeperProvider(Properties configuration) {
+    public ZookeeperProvider(Properties configuration)
+    {
         this.configuration = configuration;
     }
 
-    private CuratorFramework getZookeeperClient() {
+    private CuratorFramework getZookeeperClient()
+    {
         LOGGER.info("构建Zookeeper连接客户端");
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(
                 PropertiesUtils.getIntValue(configuration,
@@ -52,8 +55,8 @@ public class ZookeeperProvider implements Provider<ZookeeperClient> {
     }
 
     @Override
-    public ZookeeperClient get() {
+    public ZookeeperClient get()
+    {
         return new ZookeeperClient(getZookeeperClient());
     }
-
 }

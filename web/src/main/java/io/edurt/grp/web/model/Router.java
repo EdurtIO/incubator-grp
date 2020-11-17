@@ -13,12 +13,11 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Router {
-
+public class Router
+{
     private List<Param> params; // 客户端请求参数
     private Class clazz; // 请求使用的类信息
     private RequestMethod[] methods; // 请求方法类型
     private Method method; // 请求方法
     private String[] urls; // 请求路径
-
 }

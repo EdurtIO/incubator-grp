@@ -16,29 +16,32 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class GrpServer {
-
+public class GrpServer
+{
+    public static final Logger LOGGER = LoggerFactory.getLogger(GrpServer.class);
     private GrpConfiguration configuration;
     private int port;
     private Map<String, Router> routers;
 
-    public final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
-    public GrpConfiguration builder() {
+    public GrpConfiguration builder()
+    {
         this.configuration = new GrpConfiguration(this);
         return configuration;
     }
 
-    public void start() {
+    public void start()
+    {
         ServerBootstrap bootstrap = new ServerBootstrap();
         NioEventLoopGroup group = new NioEventLoopGroup();
         try {
             bootstrap
                     .group(group)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                    .childHandler(new ChannelInitializer<SocketChannel>()
+                    {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) {
+                        protected void initChannel(SocketChannel socketChannel)
+                        {
                             socketChannel.pipeline()
                                     .addLast("decoder", new HttpRequestDecoder())
                                     .addLast("encoder", new HttpResponseEncoder())
@@ -49,18 +52,20 @@ public class GrpServer {
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, Boolean.TRUE);
             bootstrap.bind(port).sync();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         LOGGER.info("Start app server at port:{}", port);
     }
 
-    public void setPort(int port) {
+    public void setPort(int port)
+    {
         this.port = port;
     }
 
-    public void setRouters(Map<String, Router> routers) {
+    public void setRouters(Map<String, Router> routers)
+    {
         this.routers = routers;
     }
-
 }

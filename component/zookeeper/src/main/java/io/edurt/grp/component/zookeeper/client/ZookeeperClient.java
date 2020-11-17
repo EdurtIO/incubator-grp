@@ -10,13 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 
-public class ZookeeperClient {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ZookeeperClient.class);
+public class ZookeeperClient
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperClient.class);
 
     private CuratorFramework client;
 
-    public ZookeeperClient(CuratorFramework client) {
+    public ZookeeperClient(CuratorFramework client)
+    {
         if (ObjectUtils.isEmpty(client)) {
             LOGGER.error("无法初始化Zookeeper客户端，请检查配置是否正确!");
             throw new RuntimeException("Unable to initialize zookeeper client instance!");
@@ -30,14 +31,17 @@ public class ZookeeperClient {
      * @param nodeName 节点名称
      * @return 创建结果，成功后返回路径，失败返回null
      */
-    public String createNode(String nodeName) {
+    public String createNode(String nodeName)
+    {
         try {
             startClient();
             String node = client.create().forPath(formatNodePath(nodeName));
             return node;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOGGER.error("创建节点{}失败，异常信息 {}", nodeName, ex);
-        } finally {
+        }
+        finally {
             closeClient();
         }
         return null;
@@ -49,11 +53,13 @@ public class ZookeeperClient {
      * @param nodeName 节点名称
      * @return 创建结果，成功后返回路径，失败返回null
      */
-    public String createEphemeralNode(String nodeName) {
+    public String createEphemeralNode(String nodeName)
+    {
         return createEphemeralNode(nodeName, null);
     }
 
-    public String createEphemeralNode(String nodeName, String value) {
+    public String createEphemeralNode(String nodeName, String value)
+    {
         try {
             startClient();
             String node;
@@ -62,16 +68,19 @@ public class ZookeeperClient {
                         .creatingParentContainersIfNeeded()
                         .withMode(CreateMode.EPHEMERAL)
                         .forPath(formatNodePath(nodeName), value.getBytes());
-            } else {
+            }
+            else {
                 node = client.create()
                         .creatingParentContainersIfNeeded()
                         .withMode(CreateMode.EPHEMERAL)
                         .forPath(formatNodePath(nodeName));
             }
             return node;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOGGER.error("创建节点{}失败，异常信息 {}", nodeName, ex);
-        } finally {
+        }
+        finally {
             closeClient();
         }
         return null;
@@ -83,16 +92,19 @@ public class ZookeeperClient {
      * @param nodeName 节点名称
      * @return 检查结果，True标志已经存在，False标志尚未存在
      */
-    public Boolean existsNode(String nodeName) {
+    public Boolean existsNode(String nodeName)
+    {
         try {
             startClient();
             Stat stat = client.checkExists().forPath(formatNodePath(nodeName));
             if (ObjectUtils.isNotEmpty(stat)) {
                 return Boolean.TRUE;
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOGGER.error("检查节点{}失败，异常信息 {}", nodeName, ex);
-        } finally {
+        }
+        finally {
             closeClient();
         }
         return Boolean.FALSE;
@@ -104,7 +116,8 @@ public class ZookeeperClient {
      * @param nodeName 节点名称
      * @return 删除节点状态，True标志删除成功，False标志删除失败
      */
-    public Boolean deleteNode(String nodeName) {
+    public Boolean deleteNode(String nodeName)
+    {
         try {
             startClient();
             client.delete()
@@ -113,9 +126,11 @@ public class ZookeeperClient {
                     .withVersion(-1)    // 无视版本，直接删除
                     .forPath(formatNodePath(nodeName));
             return Boolean.TRUE;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOGGER.error("删除节点{}失败，异常信息 {}", nodeName, ex);
-        } finally {
+        }
+        finally {
             closeClient();
         }
         return Boolean.FALSE;
@@ -127,16 +142,19 @@ public class ZookeeperClient {
      * @param nodeName 节点名称
      * @return 更新节点状态，True标志删除成功，False标志删除失败
      */
-    public Boolean updateNode(String nodeName, String value) {
+    public Boolean updateNode(String nodeName, String value)
+    {
         try {
             startClient();
             client.setData()
                     .withVersion(-1)
                     .forPath(formatNodePath(nodeName), value.getBytes());
             return Boolean.TRUE;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOGGER.error("更新节点{}失败，异常信息 {}", nodeName, ex);
-        } finally {
+        }
+        finally {
             closeClient();
         }
         return Boolean.FALSE;
@@ -148,16 +166,19 @@ public class ZookeeperClient {
      * @param nodeName 节点名称
      * @return 节点信息
      */
-    public String getNode(String nodeName) {
+    public String getNode(String nodeName)
+    {
         try {
             startClient();
             byte[] bytes = client.getData().forPath(formatNodePath(nodeName));
             if (ObjectUtils.isNotEmpty(bytes) && bytes.length > 0) {
                 return new String(bytes, Charset.forName("UTF-8"));
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             LOGGER.error("更新节点{}失败，异常信息 {}", nodeName, ex);
-        } finally {
+        }
+        finally {
             closeClient();
         }
         return null;
@@ -166,7 +187,8 @@ public class ZookeeperClient {
     /**
      * 启动Zookeeper客户端
      */
-    private void startClient() {
+    private void startClient()
+    {
         if (ObjectUtils.isNotEmpty(this.client)) {
             CuratorFrameworkState state = this.client.getState();
             if (ObjectUtils.isNotEmpty(state)) {
@@ -180,7 +202,8 @@ public class ZookeeperClient {
     /**
      * 关闭Zookeeper客户端
      */
-    private void closeClient() {
+    private void closeClient()
+    {
         if (ObjectUtils.isNotEmpty(this.client)) {
 //            CloseableUtils.closeQuietly(this.client);
         }
@@ -193,11 +216,11 @@ public class ZookeeperClient {
      * @param nodeName 节点名称
      * @return 节点名称
      */
-    private String formatNodePath(String nodeName) {
+    private String formatNodePath(String nodeName)
+    {
         if (!nodeName.startsWith("/")) {
             nodeName = "/" + nodeName;
         }
         return nodeName;
     }
-
 }

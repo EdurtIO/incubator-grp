@@ -11,12 +11,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Properties;
 
-public class ZookeeperModule extends AbstractModule {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ZookeeperModule.class);
+public class ZookeeperModule
+        extends AbstractModule
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperModule.class);
 
     @Override
-    protected void configure() {
+    protected void configure()
+    {
         // TODO: 后续支持独立读取配置信息
         LOGGER.debug("绑定Zookeeper组件信息");
         String configurationPath = String.join(File.separator, System.getProperty("user.dir"),
@@ -28,5 +30,4 @@ public class ZookeeperModule extends AbstractModule {
         ZookeeperProvider zookeeperProvider = new ZookeeperProvider(configuration);
         bind(ZookeeperClient.class).toProvider(zookeeperProvider).in(Scopes.SINGLETON);
     }
-
 }
