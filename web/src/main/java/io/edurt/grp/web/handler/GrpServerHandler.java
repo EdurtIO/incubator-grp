@@ -106,7 +106,7 @@ public class GrpServerHandler
         }
         DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
                 status,
-                Unpooled.wrappedBuffer(GSON.toJson(result).getBytes()));
+                Unpooled.wrappedBuffer(GSON.toJson(result).getBytes(Charset.defaultCharset())));
         HttpHeaders heads = response.headers();
         heads.add(HttpHeaderNames.CONTENT_TYPE, contentType + "; charset=UTF-8");
         heads.add(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());

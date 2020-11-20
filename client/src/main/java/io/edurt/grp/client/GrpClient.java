@@ -58,15 +58,15 @@ public class GrpClient
             invokeFrequency = new AtomicLong(0);
             FREQUENCY.put(request.getClassName(), invokeFrequency);
         }
-        long totalInvokeTimes = invokeFrequency.getAndAdd(1);
+//        long totalInvokeTimes = invokeFrequency.getAndAdd(1);
         ArrayListMultimap map = this.getServiceDiscovery().getServices();
         List<String> remoteServices = map.get(request.getClassName());
         if (ObjectUtils.isEmpty(remoteServices) || remoteServices.size() <= 0) {
             LOGGER.error("远程服务中无法找到服务列表");
             throw new RuntimeException("remote service not found");
         }
-        Long index = totalInvokeTimes % remoteServices.size();
-        String remoteServiceAddress = remoteServices.get(index.intValue());
+//        Long index = totalInvokeTimes % remoteServices.size();
+//        String remoteServiceAddress = remoteServices.get(index.intValue());
         return null;
     }
 }

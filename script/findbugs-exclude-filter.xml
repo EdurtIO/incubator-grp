@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+  This file contains some false positive bugs detected by findbugs. Their
+  false positive nature has been analyzed individually and they have been
+  put here to instruct findbugs it must ignore them.
+-->
+<FindBugsFilter>
+    <!-- GrpRequest由于使用[]数组此处需要过滤 -->
+    <Match>
+        <Class name="io.edurt.grp.proto.GrpRequest" />
+        <!--        <Method name="getParameterTypes" params="void" returns="java.lang.Object[]" />-->
+        <Bug pattern="EI_EXPOSE_REP" />
+    </Match>
+    <Match>
+        <Class name="io.edurt.grp.proto.GrpRequest" />
+        <!--        <Method name="getParameterTypes" params="void" returns="java.lang.Object[]" />-->
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+    <Match>
+        <Class name="io.edurt.grp.spi.registry.RegistryServiceFactory" />
+        <Bug pattern="IS2_INCONSISTENT_SYNC" />
+    </Match>
+    <Match>
+        <Class name="io.edurt.grp.web.model.Router" />
+        <!--        <Method name="getParameterTypes" params="void" returns="java.lang.Object[]" />-->
+        <Bug pattern="EI_EXPOSE_REP" />
+    </Match>
+    <Match>
+        <Class name="io.edurt.grp.web.model.Router" />
+        <!--        <Method name="getParameterTypes" params="void" returns="java.lang.Object[]" />-->
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+    <Match>
+        <Class name="io.edurt.grp.web.model.Router" />
+        <!--        <Method name="getParameterTypes" params="void" returns="java.lang.Object[]" />-->
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+</FindBugsFilter>

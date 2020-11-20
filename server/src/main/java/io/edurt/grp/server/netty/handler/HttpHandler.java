@@ -17,6 +17,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.AsciiString;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
 /**
@@ -31,9 +32,6 @@ public class HttpHandler
     private static final AsciiString TEXT_PLAIN = AsciiString.cached("text/plain; charset=utf-8");
     private static final AsciiString CONTENT_LENGTH = AsciiString.cached("Content-Length");
     private static final ChannelGroup CLIENTS = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
-    // 用于记录和管理所有客户端的channle
-    private Channel outboundChannel;
 
     /**
      * 关闭释放channel
@@ -87,9 +85,6 @@ public class HttpHandler
             throws Exception
     {
         System.out.println("websocket::::::::::: destroyed");
-        if (CLIENTS != null) {
-            closeOnFlush(outboundChannel);
-        }
     }
 
     @Override
@@ -145,7 +140,9 @@ public class HttpHandler
             default:
                 break;
         }
-        final DefaultFullHttpResponse defaultFullHttpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.copiedBuffer(body.getBytes()));
+        final DefaultFullHttpResponse defaultFullHttpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+                HttpResponseStatus.OK,
+                Unpooled.copiedBuffer(body.getBytes(Charset.defaultCharset())));
         defaultFullHttpResponse.headers().set(CONTENT_TYPE, TEXT_PLAIN);
         defaultFullHttpResponse.headers().set(CONTENT_LENGTH, defaultFullHttpResponse.content().readableBytes());
         ctx.write(defaultFullHttpResponse);

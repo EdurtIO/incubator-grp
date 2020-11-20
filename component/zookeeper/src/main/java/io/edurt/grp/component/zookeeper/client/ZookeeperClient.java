@@ -67,7 +67,7 @@ public class ZookeeperClient
                 node = client.create()
                         .creatingParentContainersIfNeeded()
                         .withMode(CreateMode.EPHEMERAL)
-                        .forPath(formatNodePath(nodeName), value.getBytes());
+                        .forPath(formatNodePath(nodeName), value.getBytes(Charset.defaultCharset()));
             }
             else {
                 node = client.create()
@@ -148,7 +148,7 @@ public class ZookeeperClient
             startClient();
             client.setData()
                     .withVersion(-1)
-                    .forPath(formatNodePath(nodeName), value.getBytes());
+                    .forPath(formatNodePath(nodeName), value.getBytes(Charset.defaultCharset()));
             return Boolean.TRUE;
         }
         catch (Exception ex) {

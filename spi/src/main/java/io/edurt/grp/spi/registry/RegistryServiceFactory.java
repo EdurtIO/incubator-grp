@@ -23,8 +23,7 @@ public class RegistryServiceFactory
     private ZookeeperClient zookeeperClient;
 
     private RegistryServiceFactory()
-    {
-    }
+    {}
 
     /**
      * 构建新的服务服务注册中心
