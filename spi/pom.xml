@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>io.edurt.grp</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>grp-common</artifactId>
         </dependency>
         <dependency>
             <groupId>io.edurt.grp</groupId>
