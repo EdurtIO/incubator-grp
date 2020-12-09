@@ -6,7 +6,7 @@
     <parent>
         <artifactId>incubator-grp</artifactId>
         <groupId>io.edurt.grp</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -22,6 +22,10 @@
         <dependency>
             <groupId>io.edurt.grp</groupId>
             <artifactId>client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.grp</groupId>
+            <artifactId>grp-web</artifactId>
         </dependency>
         <dependency>
             <groupId>io.edurt.grp.component</groupId>
